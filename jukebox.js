@@ -6,11 +6,25 @@ $( document ).ready(function() {
   // 2. When the "Enqueue Song" button is clicked, add the song's 
   // name to the list item you create. Now the queue should include 
   // song names AND the song notes themselves.
+  // 1. Only show the song's title in the queue. When you move your 
+  // mouse over a particular song in the queue, however, fade in the 
+  // song's notes. When your mouse leaves that song, fade the song's 
+  // notes back out.
 
   $('#song-form').submit(function(e) {
     e.preventDefault();
-    $('#song-queue').append( '<li><strong>' + $('#song-form input[name="songName"]').val() + '</strong><br /><em>' + $('#song-form input[name="song"]').val() + '</em></li>' );
+    $('#song-queue').append( '<li><strong>' + $('#song-form input[name="songName"]').val() + '</strong><br /><em style="display:none;">' + $('#song-form input[name="song"]').val() + '</em></li>' );
     $('#song-form input[type="text"]').val('');
+
+    $('#song-queue li').on('mouseenter', function() {
+      console.log(this);
+      $(this).find('em').fadeIn();
+    });
+
+    $('#song-queue li').on('mouseleave', function() {
+      $(this).find('em').fadeOut();
+    });
+
   });
 
   // 2. When the "Play" button is clicked:
