@@ -3,11 +3,14 @@ $( document ).ready(function() {
   // 1. When the song form is submitted, create a new list item in 
   // the "Song Queue" list, containing the song string. ALSO, clear 
   // the text field contents.
+  // 2. When the "Enqueue Song" button is clicked, add the song's 
+  // name to the list item you create. Now the queue should include 
+  // song names AND the song notes themselves.
 
   $('#song-form').submit(function(e) {
-    $('#song-queue').append( '<li>' + $('#song-form input[type="text"]').val() + '</li>' );
-    $('#song-form input[type="text"]').val('');
     e.preventDefault();
+    $('#song-queue').append( '<li><strong>' + $('#song-form input[name="songName"]').val() + '</strong><br /><em>' + $('#song-form input[name="song"]').val() + '</em></li>' );
+    $('#song-form input[type="text"]').val('');
   });
 
   // 2. When the "Play" button is clicked:
