@@ -38,22 +38,32 @@ $( document ).ready(function() {
   // the page saying "Now Playing [Song Name]". When there is no song 
   // playing, the message should say "Enter a song to play.".
 
+  var playSongQueue = function() {
+    $('#play-button').slideUp();
+    if ($('#song-queue li:first-child').length > 0) {
+      var nextSongData = $('#song-queue li:first-child').detach();
+      var nextSongTitle = $(nextSongData).find('strong').text();
+      var nextSong = $(nextSongData).find('em').text();
+      $('#now-playing').text('Now Playing ' + nextSongTitle);
+      return playSong(parseSong(nextSong), 500, playSongQueue);
+    } else {
+      $('#now-playing').text('Enter a song to play.');
+      $('#play-button').slideDown();
+    }
+  };
+
   $('#play-button').on('click', function() {
-    var flag = true;
-    var playSongQueue = function() {
-      $('#play-button').slideUp();
-      if ($('#song-queue li:first-child').length > 0) {
-        var nextSongData = $('#song-queue li:first-child').detach();
-        var nextSongTitle = $(nextSongData).find('strong').text();
-        var nextSong = $(nextSongData).find('em').text();
-        $('#now-playing').text('Now Playing' + nextSongTitle);
-        return playSong(parseSong(nextSong), 500, playSongQueue);
-      } else {
-        $('#now-playing').text('Enter a song to play.');
-        $('#play-button').slideDown();
-      }
-    };
     playSongQueue();
+  });
+
+  // 2. Start playing songs as above when you press "spacebar". 
+  // However, make sure you can still enter songs properly in the form 
+  // (the songs shouldn't start playing if you enter a space while 
+  // writing the song's notes).
+  $(document).on('keypress', function(event) {
+    if (event.which == 32 && !$(event.target).is('input')) {
+      playSongQueue();
+    }
   });
 
 });
