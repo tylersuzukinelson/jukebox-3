@@ -20,15 +20,22 @@ $( document ).ready(function() {
   //     song until there are no songs left to play.
   // 3. When the "Play" button is clicked, slide it up. When the last 
   // song is finished playing, slide the "Play" button back down.
+  // 3. When the Jukebox is playing a song, a message should show on 
+  // the page saying "Now Playing [Song Name]". When there is no song 
+  // playing, the message should say "Enter a song to play.".
 
   $('#play-button').on('click', function() {
     var flag = true;
     var playSongQueue = function() {
       $('#play-button').slideUp();
       if ($('#song-queue li:first-child').length > 0) {
-        var nextSong = $('#song-queue li:first-child').detach().text();
+        var nextSongData = $('#song-queue li:first-child').detach();
+        var nextSongTitle = $(nextSongData).find('strong').text();
+        var nextSong = $(nextSongData).find('em').text();
+        $('#now-playing').text('Now Playing' + nextSongTitle);
         return playSong(parseSong(nextSong), 500, playSongQueue);
       } else {
+        $('#now-playing').text('Enter a song to play.');
         $('#play-button').slideDown();
       }
     };
